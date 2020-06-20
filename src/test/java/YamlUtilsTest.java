@@ -2,10 +2,7 @@ import com.google.gson.reflect.TypeToken;
 import entity.App;
 import entity.Redis;
 import org.junit.Test;
-import org.yaml.snakeyaml.Yaml;
 import site.dunhanson.utils.basic.YamlUtils;
-
-import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
@@ -40,5 +37,4 @@ public class YamlUtilsTest {
         Object value = YamlUtils.load(path, childKeys);
         System.out.println(value);
     }
-
 }

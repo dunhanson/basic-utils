@@ -1,0 +1,9 @@
+apps:
+  - name: 2
+    appId: 2-1
+    apiKey: 2-2
+    secretKey: 2-3
+  - name: 1
+    appId: XXX
+    apiKey: XXX
+    secretKey: XXX

@@ -3,6 +3,7 @@ package site.dunhanson.utils.basic;
 import com.google.gson.Gson;
 import org.yaml.snakeyaml.Yaml;
 import java.io.InputStream;
+import java.lang.reflect.Type;
 import java.util.*;
 
 /**
@@ -79,6 +80,18 @@ public class YamlUtils {
     }
 
     /**
+     * 加载YAML文件,获取实体对象
+     * @param path
+     * @param type
+     * @param <T>
+     * @return 实体对象
+     */
+    public static <T> T load(String path, Type type) {
+        Gson gson = GsonUtils.gson;
+        return gson.fromJson(gson.toJson(load(path)), type);
+    }
+
+    /**
      * 加载YAML文件,获取实体对象,通过子节点key
      * @param path
      * @param type
@@ -89,8 +102,24 @@ public class YamlUtils {
     public static <T> T load(String path, Class<T> type, String...childKeys) {
         Gson gson = GsonUtils.gson;
         Map<String, Object> map = load(path);
-        map = getChildMap(map, childKeys);
-        String json = gson.toJson(map);
+        Object value = getChildValue(map, childKeys);
+        String json = gson.toJson(value);
+        return gson.fromJson(json, type);
+    }
+
+    /**
+     * 加载YAML文件,获取实体对象,通过子节点key
+     * @param path
+     * @param type
+     * @param childKeys
+     * @param <T>
+     * @return 实体对象
+     */
+    public static <T> T load(String path, Type type, String...childKeys) {
+        Gson gson = GsonUtils.gson;
+        Map<String, Object> map = load(path);
+        Object value = getChildValue(map, childKeys);
+        String json = gson.toJson(value);
         return gson.fromJson(json, type);
     }
 

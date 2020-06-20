@@ -98,7 +98,7 @@ public class YamlUtils {
      * 加载YAML文件,获取子节点值
      * @param path
      * @param childKeys
-     * @return
+     * @return 子节点值
      */
     public static Object load(String path, String...childKeys) {
         return getChildValue(load(path), childKeys);

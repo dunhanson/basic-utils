@@ -6,7 +6,7 @@
 
     <groupId>site.dunhanson.utils</groupId>
     <artifactId>basic-utils</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <name>${project.groupId}:${project.artifactId}</name>
     <description>basic utils</description>
     <url>https://github.com/dunhanson/basic-utils</url>

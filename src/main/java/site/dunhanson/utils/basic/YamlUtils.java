@@ -1,7 +1,11 @@
 package site.dunhanson.utils.basic;
 
 import com.google.gson.Gson;
+import lombok.extern.slf4j.Slf4j;
 import org.yaml.snakeyaml.Yaml;
+
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.util.*;
@@ -11,6 +15,7 @@ import java.util.*;
  * 2020.06.20
  * YAML工具类
  */
+@Slf4j
 public class YamlUtils {
     // 配置存储库
     public static Map<String, Map<String, Object>> store = Collections.synchronizedMap(new HashMap<>());
@@ -57,11 +62,25 @@ public class YamlUtils {
     public static Map<String, Object> load(String path) {
         Map<String, Object> value = store.get(path);
         if(value == null) {
-            try(InputStream in = YamlUtils.class.getClassLoader().getResourceAsStream(path)) {
-                value = new Yaml().load(in);
-                store.put(path, value);
-            } catch (Exception e) {
-                throw new RuntimeException("can not load file path, " + e.getMessage());
+            String localPath = YamlUtils.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+            localPath = localPath.substring(1);
+            localPath = localPath.substring(0, localPath.lastIndexOf("/") + 1);
+            log.info("localPath:" + localPath);
+            File localFile = new File(localPath + path);
+            if(localFile.exists()) {
+                try(InputStream inputStream = new FileInputStream(localFile)) {
+                    value = new Yaml().load(inputStream);
+                    store.put(path, value);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            } else {
+                try(InputStream inputStream = YamlUtils.class.getClassLoader().getResourceAsStream(path)) {
+                    value = new Yaml().load(inputStream);
+                    store.put(path, value);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
         return value;
